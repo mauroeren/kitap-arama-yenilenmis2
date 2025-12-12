@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitap Keşif Dünyası</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary-color: #6a11cb;
+      --secondary-color: #2575fc;
+      --card-bg: rgba(255, 255, 255, 0.25);
+      --text-color: #333;
+      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      /* Hareketli Arka Plan */
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Header Tasarımı */
+    header {
+      margin-top: 40px;
+      text-align: center;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    /* Arama Alanı - Glassmorphism */
+    #searchBar {
+      margin: 30px 0;
+      display: flex;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 50px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      animation: fadeInUp 1s ease-out 0.3s backwards;
+      width: 90%;
+      max-width: 600px;
+      transition: transform 0.3s;
+    }
+
+    #searchBar:focus-within {
+      transform: scale(1.02);
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    #searchBar input {
+      padding: 12px 20px;
+      border-radius: 30px;
+      border: none;
+      flex: 1;
+      font-size: 16px;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    #searchBar button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(45deg, #11998e, #38ef7d);
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+
+    #searchBar button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      background: linear-gradient(45deg, #0e857b, #2ecc71);
+    }
+
+    /* Sonuç Alanı - Grid Sistemi */
+    #results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 30px;
+      padding: 20px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    /* Kitap Kartları */
+    .book {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: popIn 0.6s ease-out backwards;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Kartların Hover Animasyonu */
+    .book:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    .book img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-bottom: 5px solid var(--primary-color);
+    }
+
+    .book-info {
+      padding: 20px;
+      color: #333;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .book-info h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #222;
+      line-height: 1.4;
+    }
+
+    .book-info p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Özel Buton Efekti (Kart İçi İçin Opsiyonel) */
+    .book::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      box-shadow: inset 0 0 0 0 rgba(255,255,255,0.5);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    .book:hover::after {
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+    }
+
+    /* Animasyon Keyframes */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.5) translateY(50px); }
+      70% { transform: scale(1.05); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Responsive Ayarlar */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.8rem; }
+      #searchBar { flex-direction: column; width: 95%; border-radius: 20px; }
+      #searchBar button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📚 Kütüphane Keşfi</h1>
+    <p>Aradığın bilgiye saniyeler içinde ulaş.</p>
+  </header>
+
+  <div id="searchBar">
+    <input type="text" id="search" placeholder="Kitap veya yazar adı girin..." onkeydown="if(event.key === 'Enter') searchBooksFromInput()">
+    <button onclick="searchBooksFromInput()">🔍 BUL</button>
+  </div>
+
+  <div id="results"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
